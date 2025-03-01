@@ -13,7 +13,6 @@ const poppins = Poppins({
 export const metadata = {
   title: "Real Madrid Fan Page",
   description: "The ultimate destination for Real Madrid fans",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -32,6 +31,3 @@ export default function RootLayout({
   )
 }
 
-
-
-import './globals.css'
