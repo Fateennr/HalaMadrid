@@ -76,9 +76,6 @@ export default function Home() {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe> */}
-        </div>
-      </motion.section>
-
       <Carousel
         opts={{
           align: "start",
@@ -92,6 +89,7 @@ export default function Home() {
                       <Card>
                         <CardContent className="flex aspect-square items-center justify-center p-6">
                           <span className="text-3xl font-semibold">{index + 1}</span>
+                          <p> Real Madrid 1 - 2 Real Betis</p>
                         </CardContent>
                       </Card>
                     </div>
@@ -101,6 +99,9 @@ export default function Home() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+        </div>
+      </motion.section>
+
 
       <motion.section
         className="w-full max-w-4xl"
