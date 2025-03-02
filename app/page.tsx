@@ -2,7 +2,14 @@
 
 import { motion } from "framer-motion"
 import { Lexend } from "next/font/google";
-
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const lexend = Lexend({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -27,7 +34,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        "Barca is nothing but a small part of Real Madrid’s history." <i className="text-2xl text-black">- Marco Reus</i>
+        "Fear doesn't exist in football, especially for Real Madrid." <i className="text-2xl text-black">- Luka Modric</i>
       </motion.h1>
       
       <motion.section
@@ -61,16 +68,39 @@ export default function Home() {
       >
         <h2 className="text-3xl font-semibold mb-4 text-blue-800">Highlights</h2>
         <div className="aspect-w-16 aspect-h-9">
-          <iframe
+          {/* <iframe
             className="w-full h-96 rounded-lg shadow-md"
             src="https://www.youtube.com/embed/dQw4w9WgXcQ"
             title="Real Madrid Highlights"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
         </div>
       </motion.section>
+
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full max-w-sm"
+      >
+      <CarouselContent>
+          {Array.from({ length: 5 }).map((_, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-1">
+                      <Card>
+                        <CardContent className="flex aspect-square items-center justify-center p-6">
+                          <span className="text-3xl font-semibold">{index + 1}</span>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
 
       <motion.section
         className="w-full max-w-4xl"
