@@ -1,5 +1,4 @@
 "use client"
-
 import { motion } from "framer-motion"
 import { Trophy, Star, Medal, Crown, Award } from "lucide-react"
 
