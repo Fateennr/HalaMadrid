@@ -22,14 +22,14 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <motion.h1
-        className="text-5xl font-bold mb-12 text-blue-900"
+        className="text-3xl font-bold mb-12 text-blue-900"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Welcome to Real Madrid Fan Page
+        "Barca is nothing but a small part of Real Madrid’s history." <i className="text-2xl text-black">- Marco Reus</i>
       </motion.h1>
-
+      
       <motion.section
         className="mb-12 w-full max-w-4xl"
         initial={{ opacity: 0, y: 50 }}
@@ -63,8 +63,7 @@ export default function Home() {
         <div className="aspect-w-16 aspect-h-9">
           <iframe
             className="w-full h-96 rounded-lg shadow-md"
-            // src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            src=""
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
             title="Real Madrid Highlights"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -2,8 +2,31 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
+import Image from "next/image"
+import { useState,useEffect } from "react"
 
 export default function Header() {
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+
+  useEffect( () => {
+    const handleScroll = () => {
+      if( window.scrollY > 0){
+        setIsScrolled(true);
+      }
+      else{
+        setIsScrolled(false);
+      }
+
+      window.addEventListener( "scroll", handleScroll)
+
+      return () => {
+        window.removeEventListener( "scroll", handleScroll)
+      }
+    }
+  }, [])
+
   return (
     <motion.header
       className="bg-white shadow-md fixed top-0 left-0 right-0 z-50"
@@ -14,7 +37,7 @@ export default function Header() {
       <nav className="container mx-auto px-6 py-3">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-blue-900 text-2xl font-bold">
-            Real Madrid Fan Page
+            <Image src = "RealMadrid.png" alt="Real Madrid Logo" width={80} height={80} />
           </Link>
           <div className="hidden md:flex space-x-4">
             <Link href="/news" className="text-gray-700 hover:text-blue-900 transition-colors duration-300 font-medium">
