@@ -62,14 +62,7 @@ function RealMadridLaLigaMatches() {
               <span className="font-medium">{match.awayTeam.name}</span>
             </div>
             <p className="text-gray-600 text-sm text-center mt-2">
-              {new Date(match.utcDate).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
+              {new Date(match.utcDate).toLocaleDateString('en-US')}
             </p>
           </div>
         ))}
