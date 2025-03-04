@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import RealMadridUpcomingMatches from '@/components/laligaUpcomingWidget'
 
 const lexend = Lexend({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -124,6 +125,16 @@ export default function Home() {
           ))}
         </div>
       </motion.section>
+
+      <motion.section
+        className="w-full max-w-4xl mt-12"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
+        <RealMadridUpcomingMatches />
+      </motion.section>
+      
     </main>
   )
 }
