@@ -14,8 +14,7 @@ function RealMadridLaLigaMatches() {
         const apiUrl = `http://api.football-data.org/v4/teams/${teamId}/matches?competitions=PD&status=SCHEDULED`;
 
         const response = await axios.get(apiUrl, {
-          headers: { 'X-Auth-Token': apiKey }
-            , withCredentials: true
+          headers: { 'X-Auth-Token': apiKey },
         });
 
         const upcomingMatches = response.data.matches

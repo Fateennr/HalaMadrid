@@ -15,7 +15,6 @@ function RealMadridCLMatches() {
 
         const response = await axios.get(apiUrl, {
           headers: { 'X-Auth-Token': apiKey }
-            , withCredentials: true
         });
 
         const upcomingMatches = response.data.matches
