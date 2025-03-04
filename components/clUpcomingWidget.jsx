@@ -17,8 +17,9 @@ function RealMadridUpcomingMatches() {
           .slice(0, 4); // ONLY NEXTT 4 MATCHES
         setMatches(upcomingMatches);
       })
-      .catch(error => {
-        console.error(error);
+      .catch(e => {
+        setError(e);
+        console.error(e);
       });
   }, []);
 
