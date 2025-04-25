@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Socket.IO Chat</title>
+  <style>
+    ul { list-style: none; padding: 0; }
+    li { padding: 5px 10px; }
+    form { display: flex; }
+    input { flex: 1; padding: 10px; }
+  </style>
+</head>
+<body>
+  <ul id="messages"></ul>
+  <form id="form">
+    <input id="input" autocomplete="off" placeholder="Type a message…" />
+    <button>Send</button>
+  </form>
+
+  <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+  
+  <script defer>
+    const socket = io('ws://localhost:8080');
+
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const messages = document.getElementById('messages');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!input.value) return;
+      socket.emit('message', input.value);
+      input.value = '';
+    });
+
+    socket.on('message', msg => {
+      const li = document.createElement('li');
+      li.textContent = msg;
+      messages.appendChild(li);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+</body>
+</html>
