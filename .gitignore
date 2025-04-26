@@ -1,0 +1,21 @@
+# Node stuff
+client/node_modules/
+server/node_modules/
+
+# Next.js build
+client/.next/
+
+# Output builds (if you have any)
+build/
+dist/
+
+# Environment variables
+*.env
+*.env.local
+
+# Logs
+*.log
+
+# OS/system files
+.DS_Store
+Thumbs.db
