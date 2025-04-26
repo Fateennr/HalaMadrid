@@ -92,3 +92,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.card-gradient {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,      /* pure white at the top */
+    #e3e3e5 35%,     /* light grey fade */
+    #1f243e 65%,     /* dark navy mid */
+    #1f243e 100%     /* solid navy bottom */
+  );
+}
+

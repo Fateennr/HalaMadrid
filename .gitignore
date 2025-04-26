@@ -1,20 +1,25 @@
-# Node stuff
+# Node modules
 client/node_modules/
 server/node_modules/
 
-# Next.js build
+# Next.js build output
 client/.next/
 
-# Output builds (if you have any)
+# Build outputs (general)
 build/
 dist/
 
 # Environment variables
-*.env
-*.env.local
+client/.env
+client/.env.local
+server/.env
+server/.env.local
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # OS/system files
 .DS_Store
