@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NewsHero, { NewsItem } from "@/app/components/NewsHero";
-import NewsCard from "@/app/components/NewsCard";
+import NewsHero, { NewsItem } from "@/app/components/newsComp/NewsHero";
+import NewsCard from "@/app/components/newsComp/NewsCard";
 
 export default function NewsPage() {
   const [news, setNews] = useState<NewsItem[]>([]);
