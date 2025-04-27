@@ -1,18 +1,19 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const tailwindConfig: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    // add any other folders with JSX/TSX
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      // your custom theme tweaks
     },
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [
+    // require("@tailwindcss/line-clamp"), // if you need line-clamp
+  ],
+};
+
+export default tailwindConfig;
