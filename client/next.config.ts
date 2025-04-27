@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       "via.placeholder.com",
-      // add any other image hosts you need here
+      "upload.wikimedia.org", "crests.football-data.org",
     ],
   },
   reactStrictMode: true,
