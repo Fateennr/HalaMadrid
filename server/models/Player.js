@@ -8,6 +8,7 @@ const playerSchema = new mongoose.Schema({
   age: Number,
 });
 
-const Player = mongoose.model("Player", playerSchema);
+
+const Player = mongoose.model("Player", playerSchema, "players");
 
 module.exports = Player;
