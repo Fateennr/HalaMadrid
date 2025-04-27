@@ -12,6 +12,7 @@ export interface Player {
   nationality: string;
   age:         number;
   image?:      string;
+  imageLink?:  string; 
 }
 
 const cardVariants = {
@@ -33,9 +34,9 @@ export function SquadCard({ player }: { player: Player }) {
     >
       {/* ——— Top half: light-at-top gradient + optional photo + dark fade ——— */}
       <div className="relative h-80 bg-gradient-to-b from-white/10 to-white/5">
-        {player.image && (
+        {player.imageLink && (
           <Image
-            src={player.image}
+            src={player.imageLink} // Use imageLink if available
             alt={player.name}
             fill
             className="object-cover object-top"
@@ -45,7 +46,7 @@ export function SquadCard({ player }: { player: Player }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c3d] to-transparent opacity-60" />
         {/* position badge in bottom center of top half */}
         <div className="absolute bottom-4 w-full text-center">
-          <span className="block text-white text-lg font-bold mb-1">
+          <span className="block text-white text-xl font-bold mb-1">
             #{player.number}
           </span>
           <span className="inline-block px-3 py-1 bg-[#febe10] text-[#0b1c3d] text-xs font-bold rounded-full">

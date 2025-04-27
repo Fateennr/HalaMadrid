@@ -6,6 +6,7 @@ const playerSchema = new mongoose.Schema({
   number: Number,
   nationality: String,
   age: Number,
+  imageLink: String,
 });
 
 
