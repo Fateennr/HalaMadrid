@@ -45,6 +45,9 @@ export function SquadCard({ player }: { player: Player }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0b1c3d] to-transparent opacity-60" />
         {/* position badge in bottom center of top half */}
         <div className="absolute bottom-4 w-full text-center">
+          <span className="block text-white text-lg font-bold mb-1">
+            #{player.number}
+          </span>
           <span className="inline-block px-3 py-1 bg-[#febe10] text-[#0b1c3d] text-xs font-bold rounded-full">
             {player.position}
           </span>
@@ -54,7 +57,7 @@ export function SquadCard({ player }: { player: Player }) {
       {/* ——— Bottom half: navy background, fixed padding ——— */}
       <div className="bg-[#0b1120] p-6 text-center flex-1 flex flex-col justify-center">
         <h3 className="text-white text-2xl font-bold leading-snug">
-          #{player.number} – {player.name}
+          {player.name}
         </h3>
         <p className="text-[#febe10] font-medium mt-2">{player.nationality}</p>
         <p className="text-gray-300 text-sm mt-1">{player.age} yrs</p>
