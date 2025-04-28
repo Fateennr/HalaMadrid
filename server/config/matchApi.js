@@ -4,7 +4,7 @@ const BASE  = "https://api.football-data.org/v4";
 const TOKEN = process.env.FOOTBALL_DATA_TOKEN;
 
 if (!TOKEN) {
-  console.error("❌ FOOTBALL_DATA_TOKEN missing in .env");
+  console.error("FOOTBALL_DATA_TOKEN missing in .env");
   process.exit(1);
 }
 
