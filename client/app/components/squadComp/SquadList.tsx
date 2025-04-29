@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { PlayerCard, type Player } from "@/app/components/player-card"
-import { PlayerModal } from "@/app/components/player-modal"
+import { PlayerCard, type Player } from "@/app/components/squadComp/player-card"
+import { PlayerModal } from "@/app/components/squadComp/player-modal"
 import { PageHeader } from "@/components/ui/page-header"
 
 const containerVariants = {

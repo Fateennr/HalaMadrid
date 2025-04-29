@@ -6,7 +6,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { X, Trophy, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
-import type { Legend } from "@/app/components/legend-card"
+import type { Legend } from "@/app/components/legendComp/legend-card"
 
 interface LegendModalProps {
   legend: Legend | null
