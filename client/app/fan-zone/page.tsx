@@ -1,64 +1,67 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Heart, MessageCircle, Share2, Send, Users } from "lucide-react"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Heart, MessageCircle, Share2, Send, Users, LogOut } from "lucide-react";
 
 export default function FanZonePage() {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "MadridFan1902",
-      avatar: "/placeholder.svg?height=40&width=40",
-      content: "What an incredible victory last night! Vinicius Jr. was absolutely unstoppable! 🔥⚽",
-      image: "/placeholder.svg?height=400&width=600",
-      likes: 245,
-      comments: 42,
-      time: "2h ago",
-      isLiked: false,
-    },
-    {
-      id: 2,
-      author: "HalaMadrid",
-      avatar: "/placeholder.svg?height=40&width=40",
-      content:
-        "Transfer window rumors: Who do you think we should sign next season? I'm hoping for a new defensive midfielder.",
-      image: "",
-      likes: 178,
-      comments: 78,
-      time: "5h ago",
-      isLiked: true,
-    },
-    {
-      id: 3,
-      author: "BernabeuLegend",
-      avatar: "/placeholder.svg?height=40&width=40",
-      content:
-        "My match day ritual: wearing the 2017 jersey, same spot on the couch, and my lucky scarf. What's yours?",
-      image: "/placeholder.svg?height=400&width=600",
-      likes: 132,
-      comments: 23,
-      time: "1d ago",
-      isLiked: false,
-    },
-  ])
+  interface Post {
+    id: string;
+    avatar?: string;
+    author: string;
+    time: string;
+    content: string;
+    image?: string;
+    isLiked: boolean;
+    likes: number;
+    comments: number;
+  }
 
-  const [activeChat, setActiveChat] = useState("general")
-  const [chatMessage, setChatMessage] = useState("")
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeChat, setActiveChat] = useState("general");
+  const [chatMessage, setChatMessage] = useState("");
+  const router = useRouter();
 
-  const toggleLike = (postId: number) => {
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            isLiked: !post.isLiked,
-          }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login"); // Redirect to login if no token
+      return;
+    }
+
+    fetchPosts();
+
+    async function fetchPosts() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fan-zone`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) {
+          throw new Error("Unauthorized");
         }
-        return post
-      }),
-    )
+
+        const data = await res.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        router.push("/login"); // Redirect to login on error
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from localStorage
+    router.push("/login"); // Redirect to the login page
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -74,11 +77,12 @@ export default function FanZonePage() {
             <span className="text-[#febe10]">Madridistas</span> Fan Zone
           </h1>
           <div className="flex space-x-4">
-            <button className="bg-white bg-opacity-10 hover:bg-opacity-20 px-4 py-2 rounded-full transition">
-              Create Post
-            </button>
-            <button className="bg-[#febe10] text-[#0b1c3d] px-4 py-2 rounded-full font-medium hover:bg-opacity-90 transition">
-              Join Chat
+            <button
+              onClick={handleLogout}
+              className="flex items-center bg-red-600 text-white px-4 py-2 rounded-full font-medium hover:bg-red-700 transition"
+            >
+              <LogOut className="h-5 w-5 mr-2" />
+              Logout
             </button>
           </div>
         </motion.div>
@@ -112,13 +116,13 @@ export default function FanZonePage() {
             </motion.div>
 
             {/* Posts */}
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <motion.div
                 key={post.id}
                 className="bg-white bg-opacity-10 p-6 rounded-xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5 }}
               >
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gray-600 overflow-hidden">
@@ -139,7 +143,7 @@ export default function FanZonePage() {
                 )}
 
                 <div className="flex items-center justify-between pt-3 border-t border-white border-opacity-10">
-                  <button className="flex items-center space-x-1 group" onClick={() => toggleLike(post.id)}>
+                  <button className="flex items-center space-x-1 group">
                     <Heart
                       className={`h-5 w-5 ${post.isLiked ? "text-red-500 fill-red-500" : "text-gray-400 group-hover:text-red-500"}`}
                     />
@@ -201,47 +205,7 @@ export default function FanZonePage() {
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                <div className="flex items-start space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-600 overflow-hidden flex-shrink-0">
-                    <img src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                  </div>
-                  <div className="bg-white bg-opacity-5 rounded-lg p-2 max-w-[80%]">
-                    <p className="text-xs text-[#febe10] font-medium">CarlosFan88</p>
-                    <p className="text-sm">Did you see that pass from Modric last night? Pure magic!</p>
-                    <p className="text-xs text-gray-400 mt-1">10:32 AM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-600 overflow-hidden flex-shrink-0">
-                    <img src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                  </div>
-                  <div className="bg-white bg-opacity-5 rounded-lg p-2 max-w-[80%]">
-                    <p className="text-xs text-[#febe10] font-medium">ViniJr20</p>
-                    <p className="text-sm">
-                      I think we need to strengthen our defense this summer. What do you all think?
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">10:45 AM</p>
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <div className="bg-[#febe10] bg-opacity-20 rounded-lg p-2 max-w-[80%]">
-                    <p className="text-sm">A new center back would be perfect.</p>
-                    <p className="text-xs text-gray-400 mt-1">10:47 AM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-600 overflow-hidden flex-shrink-0">
-                    <img src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                  </div>
-                  <div className="bg-white bg-opacity-5 rounded-lg p-2 max-w-[80%]">
-                    <p className="text-xs text-[#febe10] font-medium">BernabeuLegend</p>
-                    <p className="text-sm">Anyone going to the next home game? We could meet up!</p>
-                    <p className="text-xs text-gray-400 mt-1">11:02 AM</p>
-                  </div>
-                </div>
+                {/* Chat messages */}
               </div>
 
               <div className="p-3 border-t border-white border-opacity-10">
@@ -263,6 +227,6 @@ export default function FanZonePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
