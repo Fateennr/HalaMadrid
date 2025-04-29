@@ -14,12 +14,17 @@ export interface Player {
   imageLink?: string
 }
 
+interface PlayerCardProps {
+  player: Player
+  onClick: () => void
+}
+
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 }
 
-export function PlayerCard({ player }: { player: Player }) {
+export function PlayerCard({ player, onClick }: PlayerCardProps) {
   return (
     <motion.div
       variants={cardVariants}
@@ -28,8 +33,9 @@ export function PlayerCard({ player }: { player: Player }) {
       className="
         flex flex-col overflow-hidden rounded-xl bg-white
         transform transition-all duration-300 border border-gray-200
-        hover:-translate-y-2 hover:shadow-lg
+        hover:-translate-y-2 hover:shadow-lg cursor-pointer
       "
+      onClick={onClick}
     >
       {/* Top half: player image with gradient overlay */}
       <div className="relative h-80 bg-gradient-to-b from-blue-50 to-blue-100">
