@@ -1,56 +1,76 @@
-// app/components/matchComp/MatchCard.tsx
-"use client";
+"use client"
 
-import Image from "next/image";
-import React from "react";
-import type { MatchItem } from "./MatchHero";
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { Calendar, MapPin, Trophy } from "lucide-react"
+import type { MatchItem } from "./MatchHero"
 
-export default function MatchCard({ match }: { match: MatchItem }) {
-  // Format both date and time in one go:
-  const formattedDateTime = new Date(match.date).toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
+interface MatchCardProps {
+  match: MatchItem
+  index: number
+}
+
+export default function MatchCard({ match, index }: MatchCardProps) {
+  const matchDate = new Date(match.date)
+
+  // Format date and time
+  const formattedDate = matchDate.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+
+  const formattedTime = matchDate.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
 
   return (
-    <article className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-      <div className="p-4">
-        {/* Show “Apr 28, 2025, 2:30 PM” (or your locale’s equivalent) */}
-        <p className="text-xs text-gray-500 mb-1">{formattedDateTime}</p>
+    <motion.article
+      className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-200 hover:-translate-y-1"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.02 }}
+    >
+      <div className="p-5">
+        <div className="flex items-center space-x-2 mb-3">
+          <Trophy className="h-4 w-4 text-blue-600" />
+          <span className="text-blue-600 text-sm font-medium">{match.competition}</span>
+        </div>
 
-        <div className="flex items-center justify-between">
-          {/* Home team */}
-          <div className="flex items-center space-x-2">
-            <Image
-              src={match.homeLogo}
-              alt={match.home}
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
-            <span className="font-medium">{match.home}</span>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="relative h-10 w-10">
+              <Image src={match.homeLogo || "/placeholder.svg"} alt={match.home} fill className="object-contain" />
+            </div>
+            <span className="font-medium text-gray-800">{match.home}</span>
           </div>
 
-          <span className="font-bold">vs</span>
+          <span className="font-bold text-gray-500 mx-2">vs</span>
 
-          {/* Away team */}
-          <div className="flex items-center space-x-2">
-            <span className="font-medium">{match.away}</span>
-            <Image
-              src={match.awayLogo}
-              alt={match.away}
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
+          <div className="flex items-center space-x-3">
+            <span className="font-medium text-gray-800">{match.away}</span>
+            <div className="relative h-10 w-10">
+              <Image src={match.awayLogo || "/placeholder.svg"} alt={match.away} fill className="object-contain" />
+            </div>
           </div>
         </div>
 
-        {/* Competition name */}
-        <p className="mt-2 text-gray-700">{match.competition}</p>
-        {/* Venue */}
-        <p className="mt-1 text-gray-500 text-sm">Venue: {match.venue}</p>
+        <div className="border-t border-gray-100 pt-3 space-y-2">
+          <div className="flex items-center space-x-2">
+            <Calendar className="h-4 w-4 text-gray-400" />
+            <span className="text-gray-600 text-sm">
+              {formattedDate} • {formattedTime}
+            </span>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <MapPin className="h-4 w-4 text-gray-400" />
+            <span className="text-gray-600 text-sm">{match.venue}</span>
+          </div>
+        </div>
       </div>
-    </article>
-  );
+    </motion.article>
+  )
 }
