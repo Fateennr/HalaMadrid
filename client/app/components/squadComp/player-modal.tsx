@@ -6,7 +6,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight, User, Flag, Calendar, Hash, Award, TrendingUp } from "lucide-react"
-import type { Player } from "@/app/components/player-card"
+import type { Player } from "@/app/components/squadComp/player-card"
 
 interface PlayerModalProps {
   player: Player | null

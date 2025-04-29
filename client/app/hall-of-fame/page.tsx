@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { PageHeader } from "@/components/ui/page-header"
-import { LegendCard, type Legend } from "@/app/components/legend-card"
-import { LegendModal } from "@/app/components/legend-modal"
+import { LegendCard, type Legend } from "@/app/components/legendComp/legend-card"
+import { LegendModal } from "@/app/components/legendComp/legend-modal"
 
 export default function HallOfFamePage() {
   const [selectedLegend, setSelectedLegend] = useState<Legend | null>(null)
