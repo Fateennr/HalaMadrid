@@ -10,7 +10,7 @@ const BASE   = "https://v3.football.api-sports.io";
 
 if (!KEY || !LEAGUE || !SEASON || !TEAM) {
   console.error(
-    "🚨 Missing one of FOOTBALL_KEY / FOOTBALL_LEAGUE / FOOTBALL_SEASON / FOOTBALL_TEAM_ID in .env"
+    "Missing one of FOOTBALL_KEY / FOOTBALL_LEAGUE / FOOTBALL_SEASON / FOOTBALL_TEAM_ID in .env"
   );
   process.exit(1);
 }
