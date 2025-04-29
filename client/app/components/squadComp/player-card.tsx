@@ -4,14 +4,14 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 
 export interface Player {
-  _id: string
-  name: string
-  position: string
-  number: number
-  nationality: string
-  age: number
-  image?: string
-  imageLink?: string
+  _id: string;                 // your Mongo id
+  apiFootballId: number;       // new field
+  name: string;
+  position: string;
+  number: number;
+  nationality: string;
+  age: number;
+  imageLink?: string;
 }
 
 interface PlayerCardProps {

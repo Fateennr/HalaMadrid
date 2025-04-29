@@ -28,17 +28,21 @@ export default async function MatchesPage() {
 
   const [nextMatch, ...others] = matches;
   return (
-    <main className="bg-gray-50 dark:bg-gray-900">
-      <MatchHero match={nextMatch} />
+    <main className="min-h-screen bg-gray-50">
+      <MatchHero match={matches[0]} />
 
-      <section className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">Other Upcoming Matches</h2>
+      <section className="container mx-auto px-4 py-12 pb-24">
+        <h2 className="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+          <span className="h-1 w-6 bg-blue-600 rounded-full mr-3"></span>
+          Other Upcoming Matches
+        </h2>
+
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {others.map((m, i) => (
-            <MatchCard key={i} match={m} />
+          {matches.slice(1).map((match, i) => (
+            <MatchCard key={i} match={match} index={i} />
           ))}
         </div>
       </section>
     </main>
-  );
+  )
 }
