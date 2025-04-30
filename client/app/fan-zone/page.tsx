@@ -1,11 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Heart, MessageCircle, Clock, ImageIcon, Send } from "lucide-react"
+import { Heart, Clock, ImageIcon, Send, Trophy } from "lucide-react"
+import ChatBox from "../components/ChatBox"
 
 // Types
 interface Post {
@@ -81,19 +81,19 @@ export default function FanZonePage() {
 
   // Handle post submission
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!content.trim()) {
-      setError("Post content cannot be empty");
-      return;
+      setError("Post content cannot be empty")
+      return
     }
 
-    setIsLoading(true);
-    setError("");
+    setIsLoading(true)
+    setError("")
 
     try {
-      const token = localStorage.getItem("token");
-      const imageData = image; // This is already base64 from FileReader
+      const token = localStorage.getItem("token")
+      const imageData = image // This is already base64 from FileReader
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fanzone`, {
         method: "POST",
@@ -104,29 +104,29 @@ export default function FanZonePage() {
         body: JSON.stringify({
           content,
           image: imageData,
-          avatar: "/placeholder.svg"
+          avatar: "/placeholder.svg",
         }),
-      });
+      })
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to create post");
+        const errorData = await res.json()
+        throw new Error(errorData.error || "Failed to create post")
       }
 
       // Reset form
-      setContent("");
-      setImage(null);
-      setImageFile(null);
+      setContent("")
+      setImage(null)
+      setImageFile(null)
 
       // Refresh posts
-      fetchPosts();
+      fetchPosts()
     } catch (err: any) {
-      console.error("Error creating post:", err);
-      setError(err.message || "Failed to create post");
+      console.error("Error creating post:", err)
+      setError(err.message || "Failed to create post")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   // Handle like post
   const handleLike = async (postId: string) => {
@@ -167,75 +167,119 @@ export default function FanZonePage() {
     }
   }
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0b1c3d] to-[#1a1a1a] text-white">
-      <div className="container mx-auto px-4 py-8">
-        <motion.h1
-          className="text-3xl font-bold text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
+    <div className="min-h-screen bg-gray-50 p-10 md:p-12">
+      <div className="max-w-5xl mx-auto">
+        {/* Header section with animation */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7 }}
         >
-          <span className="text-[#febe10]">Madridistas</span> Fan Zone
-        </motion.h1>
+          <motion.div
+            className="inline-block"
+            animate={{
+              rotate: [0, 5, 0, -5, 0],
+              scale: [1, 1.05, 1],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
+          >
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">Real Madrid CF</h1>
+          </motion.div>
+          <h2 className="text-2xl md:text-3xl text-gray-700 font-semibold mb-6">Fan Zone</h2>
+          <div className="h-1 w-32 bg-blue-600 mx-auto rounded-full mb-8"></div>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Connect with fellow Madridistas and share your passion for the greatest club in football history.
+          </p>
+        </motion.div>
+
+
 
         {/* Create Post Form */}
         <motion.div
-          className="bg-white bg-opacity-10 rounded-xl p-6 mb-8"
+          className="bg-white rounded-xl p-6 mb-8 shadow-md border border-gray-200"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="text-xl font-semibold mb-4">Share with fellow fans</h2>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <div className="flex items-center gap-3 mb-4">
+            <Trophy className="text-blue-600" size={24} />
+            <h2 className="text-xl font-semibold text-gray-800">Share with fellow fans</h2>
+          </div>
+
+          {error && (
+            <motion.p
+              className="text-red-500 mb-4 p-3 bg-red-50 rounded-lg"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              {error}
+            </motion.p>
+          )}
 
           <form onSubmit={handleSubmit}>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full bg-white bg-opacity-10 text-white placeholder-gray-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#febe10] min-h-[100px] mb-4"
+              className="w-full bg-gray-50 text-gray-800 placeholder-gray-500 p-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[120px] mb-4"
               placeholder="What's on your mind, Madridista?"
             />
 
             {image && (
-              <div className="relative mb-4">
-                <div className="relative w-full" style={{ maxWidth: '700px', margin: '0 auto' }}>
-                  <img
-                    src={image || "/placeholder.svg"}
-                    alt="Preview"
-                    className="w-full rounded-lg object-contain"
-                    style={{ 
-                      width: '500px',
-                      height: '500px',
-                      objectFit: 'contain',
-                      backgroundColor: 'rgba(0, 0, 0, 0.2)'
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setImage(null)
-                      setImageFile(null)
-                    }}
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
-                  >
-                    &times;
-                  </button>
-                </div>
-              </div>
+
+              <motion.div
+                className="relative mb-4 overflow-hidden rounded-lg border border-gray-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <img src={image || "/placeholder.svg"} alt="Preview" className="w-full max-h-[300px] object-contain" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImage(null)
+                    setImageFile(null)
+                  }}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600 transition-colors"
+                >
+                  &times;
+                </button>
+              </motion.div>
+
             )}
 
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer text-[#febe10] hover:text-[#febe10]/80">
+              <label className="flex items-center gap-2 cursor-pointer text-blue-600 hover:text-blue-700 transition-colors">
                 <ImageIcon size={20} />
-                <span>Add Image</span>
+                <span className="font-medium">Add Image</span>
                 <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
               </label>
 
-              <button
+              <motion.button
                 type="submit"
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-[#febe10] text-[#0b1c3d] px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition disabled:opacity-50"
+                className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:hover:bg-blue-600"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {isLoading ? (
                   "Posting..."
@@ -245,26 +289,30 @@ export default function FanZonePage() {
                     Post
                   </>
                 )}
-              </button>
+              </motion.button>
             </div>
           </form>
         </motion.div>
 
         {/* Posts List */}
-        <div className="space-y-6">
+        <motion.div className="space-y-6" variants={container} initial="hidden" animate="show">
           {posts.length === 0 ? (
-            <p className="text-center text-gray-400">No posts yet. Be the first to share!</p>
+            <motion.div
+              className="text-center p-12 bg-white rounded-xl shadow-md border border-gray-200"
+              variants={item}
+            >
+              <p className="text-gray-500 mb-4">No posts yet. Be the first to share!</p>
+              <div className="h-1 w-24 bg-blue-200 mx-auto rounded-full"></div>
+            </motion.div>
           ) : (
             posts.map((post, index) => (
               <motion.div
                 key={post._id}
-                className="bg-white bg-opacity-10 rounded-xl p-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
+                className="bg-white rounded-xl p-6 shadow-md border border-gray-200 hover:shadow-lg transition-shadow"
+                variants={item}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-blue-100">
                     <img
                       src={post.avatar || "https://ui-avatars.com/api/?name=" + (post.author?.username || "User")}
                       alt={post.author?.username || "User"}
@@ -272,52 +320,99 @@ export default function FanZonePage() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{post.author?.username || "Anonymous"}</h3>
-                    <div className="flex items-center text-sm text-gray-400">
+                    <h3 className="font-semibold text-gray-800">{post.author?.username || "Anonymous"}</h3>
+                    <div className="flex items-center text-sm text-gray-500">
                       <Clock size={14} className="mr-1" />
                       {formatDate(post.createdAt)}
                     </div>
                   </div>
                 </div>
 
-                <p className="mb-4">{post.content}</p>
+                <p className="mb-4 text-gray-700">{post.content}</p>
 
                 {post.image && (
-                  <div className="mb-4">
-                    <div className="relative w-full" style={{ maxWidth: '700px', margin: '0 auto' }}>
-                      <img
-                        src={post.image || "/placeholder.svg"}
-                        alt="Post image"
-                        className="w-full rounded-lg object-contain"
-                        style={{ 
-                          width: '700px',
-                          height: '700px',
-                          objectFit: 'contain',
-                          backgroundColor: 'rgba(0, 0, 0, 0.2)'
-                        }}
-                      />
-                    </div>
-                  </div>
+
+                  <motion.div
+                    className="mb-4 overflow-hidden rounded-lg border border-gray-200"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                  >
+                    <img
+                      src={post.image || "/placeholder.svg"}
+                      alt="Post image"
+                      className="w-full rounded-lg object-contain"
+                      style={{
+                        maxHeight: "500px",
+                        width: "100%",
+                        height: "auto",
+                      }}
+                    />
+                  </motion.div>
+
                 )}
 
-                <div className="flex items-center gap-4 text-gray-400">
-                  <button
+                <div className="flex items-center gap-6 text-gray-500 pt-2 border-t border-gray-100">
+                  <motion.button
                     onClick={() => handleLike(post._id)}
-                    className="flex items-center gap-1 hover:text-[#febe10] transition"
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <Heart size={18} />
-                    <span>{post.likes}</span>
-                  </button>
-                  <div className="flex items-center gap-1">
-                    <MessageCircle size={18} />
-                    <span>0</span>
-                  </div>
+                    <span className="font-medium">{post.likes}</span>
+                  </motion.button>
+                  <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.05 }}>
+                  
+            
+                  </motion.div>
                 </div>
+
               </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
+
+        {/* Fan stats section */}
+        <motion.div
+          className="mt-12 bg-white p-8 rounded-xl shadow-md border border-gray-200"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
+        >
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">Fan Community Guidelines</h3>
+          <ul className="space-y-4">
+            <motion.li
+              className="flex items-start gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1, duration: 0.5 }}
+            >
+              <Trophy className="text-blue-500 mt-1 flex-shrink-0" size={20} />
+              <span className="text-gray-700">Respect fellow Madridistas and maintain a positive environment</span>
+            </motion.li>
+            <motion.li
+              className="flex items-start gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.1, duration: 0.5 }}
+            >
+              <Trophy className="text-blue-500 mt-1 flex-shrink-0" size={20} />
+              <span className="text-gray-700">Share your passion, memories, and support for Real Madrid</span>
+            </motion.li>
+            <motion.li
+              className="flex items-start gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+            >
+              <Trophy className="text-blue-500 mt-1 flex-shrink-0" size={20} />
+              <span className="text-gray-700">Help new fans learn about our rich history and traditions</span>
+            </motion.li>
+          </ul>
+        </motion.div>
       </div>
+      <ChatBox />
     </div>
   )
 }
