@@ -1,25 +1,26 @@
-const { Server } = require('socket.io');
-const Chat = require('./models/chat.model');
+const { Server } = require("socket.io");
 
 function initSockets(server) {
-  const io = new Server(server, { cors: { origin: '*' } });
+  // allow CORS from any origin (adjust in production!)
+  const io = new Server(server, {
+    cors: { origin: "*" }
+  });
 
-  io.on('connection', async socket => {
-    // send existing history to this client
-    const history = await Chat.find()
-      .sort({ createdAt: 1 })
-      .populate('author', 'username');
-    socket.emit('chat-history', history);
+  io.on("connection", socket => {
+    console.log("socket connected:", socket.id);
 
-    socket.on('chat', async msg => {
-      // msg: { userId, content }
-      const chat = await Chat.create({ author: msg.userId, content: msg.content });
-      const populated = await chat.populate('author', 'username');
-      io.to('fan-zone').emit('chat', populated);
+    // join everybody to the same “fan-zone” room
+    socket.join("fan-zone");
+
+    // relay incoming chat messages to everyone in room
+    socket.on("chat", msg => {
+      // msg should be { author, content, time }
+      io.to("fan-zone").emit("chat", msg);
     });
 
-    socket.join('fan-zone');
-    socket.on('disconnect', () => {});
+    socket.on("disconnect", () => {
+      console.log("socket disconnected:", socket.id);
+    });
   });
 
   return io;

@@ -6,7 +6,7 @@ const matchR = require("./routes/matches");
 const squadR = require("./routes/squad");
 const authRoutes = require("./routes/auth");
 const fanzoneRoutes = require("./routes/posts.routes"); 
-const chatRoutes = require('./routes/chat.routes');
+
 
 
 
@@ -24,7 +24,7 @@ app.use("/api/squad", squadR);
 // Auth Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/fanzone", fanzoneRoutes); 
-app.use('/api/chat', chatRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
