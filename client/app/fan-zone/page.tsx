@@ -246,6 +246,7 @@ export default function FanZonePage() {
             />
 
             {image && (
+
               <motion.div
                 className="relative mb-4 overflow-hidden rounded-lg border border-gray-200"
                 initial={{ opacity: 0, y: 20 }}
@@ -263,6 +264,7 @@ export default function FanZonePage() {
                   &times;
                 </button>
               </motion.div>
+
             )}
 
             <div className="flex items-center justify-between">
@@ -329,6 +331,7 @@ export default function FanZonePage() {
                 <p className="mb-4 text-gray-700">{post.content}</p>
 
                 {post.image && (
+
                   <motion.div
                     className="mb-4 overflow-hidden rounded-lg border border-gray-200"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -346,6 +349,7 @@ export default function FanZonePage() {
                       }}
                     />
                   </motion.div>
+
                 )}
 
                 <div className="flex items-center gap-6 text-gray-500 pt-2 border-t border-gray-100">
