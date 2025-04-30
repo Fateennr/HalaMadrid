@@ -5,7 +5,7 @@ const newsR = require("./routes/news");
 const matchR = require("./routes/matches");
 const squadR = require("./routes/squad");
 const authRoutes = require("./routes/auth");
-const fanZoneR = require("./routes/fanZone"); 
+const fanzoneRoutes = require("./routes/posts.routes"); 
 
 const app = express();
 app.use(cors());
@@ -15,6 +15,6 @@ app.use("/api/matches", matchR);
 app.use("/api/squad", squadR);
 // Auth Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/fan-zone", fanZoneR); 
+app.use("/api/fanzone", fanzoneRoutes); 
 
 module.exports = app;
