@@ -81,27 +81,19 @@ export default function FanZonePage() {
 
   // Handle post submission
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!content.trim()) {
-      setError("Post content cannot be empty")
-      return
+      setError("Post content cannot be empty");
+      return;
     }
 
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setError("");
 
     try {
-      const token = localStorage.getItem("token")
-
-      // In a real implementation, you would upload the image to a server/cloud storage
-      // and get back a URL. For this example, we'll use a placeholder.
-      let imageUrl = null
-      if (imageFile) {
-        // Since the placeholder.svg is not available, we'll use a data URL for now
-        // In a real app, you'd upload the image and get a URL
-        imageUrl = image // Use the data URL from FileReader
-      }
+      const token = localStorage.getItem("token");
+      const imageData = image; // This is already base64 from FileReader
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fanzone`, {
         method: "POST",
@@ -111,29 +103,30 @@ export default function FanZonePage() {
         },
         body: JSON.stringify({
           content,
-          image: imageUrl,
-          avatar: "/placeholder.svg?height=40&width=40", // Placeholder avatar
+          image: imageData,
+          avatar: "/placeholder.svg"
         }),
-      })
+      });
 
       if (!res.ok) {
-        throw new Error("Failed to create post")
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to create post");
       }
 
       // Reset form
-      setContent("")
-      setImage(null)
-      setImageFile(null)
+      setContent("");
+      setImage(null);
+      setImageFile(null);
 
       // Refresh posts
-      fetchPosts()
+      fetchPosts();
     } catch (err: any) {
-      console.error("Error creating post:", err)
-      setError(err.message || "Failed to create post")
+      console.error("Error creating post:", err);
+      setError(err.message || "Failed to create post");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Handle like post
   const handleLike = async (postId: string) => {
@@ -282,12 +275,19 @@ export default function FanZonePage() {
                 <p className="mb-4">{post.content}</p>
 
                 {post.image && (
-                  <div className="mb-4 rounded-lg overflow-hidden">
-                    <img
-                      src={post.image || "/placeholder.svg"}
-                      alt="Post image"
-                      className="w-full max-h-[400px] object-cover rounded-lg"
-                    />
+                  <div className="mb-4">
+                    <div className="relative w-full">
+                      <img
+                        src={post.image || "/placeholder.svg"}
+                        alt="Post image"
+                        className="w-full rounded-lg object-contain"
+                        style={{ 
+                          maxHeight: '900px',
+                          width: '100%',
+                          height: 'auto'
+                        }}
+                      />
+                    </div>
                   </div>
                 )}
 
