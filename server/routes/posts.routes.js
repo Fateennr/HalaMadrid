@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
+const multer = require('multer');
 const PostService = require('../services/posts.services.js');
 
 
