@@ -21,6 +21,7 @@ app.use("/api/squad", squadR);
 app.use("/api/auth", authRoutes);
 app.use("/api/fanzone", fanzoneRoutes); 
 
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

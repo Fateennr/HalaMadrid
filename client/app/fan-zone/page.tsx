@@ -4,7 +4,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Heart, MessageCircle, Clock, ImageIcon, Send, Trophy } from "lucide-react"
+import { Heart, Clock, ImageIcon, Send, Trophy } from "lucide-react"
 
 // Types
 interface Post {
@@ -358,8 +358,8 @@ export default function FanZonePage() {
                     <span className="font-medium">{post.likes}</span>
                   </motion.button>
                   <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.05 }}>
-                    <MessageCircle size={18} />
-                    <span className="font-medium">0</span>
+                  
+            
                   </motion.div>
                 </div>
 
