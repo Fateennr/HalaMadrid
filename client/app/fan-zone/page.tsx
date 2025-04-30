@@ -199,21 +199,29 @@ export default function FanZonePage() {
 
             {image && (
               <div className="relative mb-4">
-                <img
-                  src={image || "/placeholder.svg"}
-                  alt="Preview"
-                  className="w-full max-h-[300px] object-contain rounded-lg"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setImage(null)
-                    setImageFile(null)
-                  }}
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
-                >
-                  &times;
-                </button>
+                <div className="relative w-full" style={{ maxWidth: '700px', margin: '0 auto' }}>
+                  <img
+                    src={image || "/placeholder.svg"}
+                    alt="Preview"
+                    className="w-full rounded-lg object-contain"
+                    style={{ 
+                      width: '500px',
+                      height: '500px',
+                      objectFit: 'contain',
+                      backgroundColor: 'rgba(0, 0, 0, 0.2)'
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImage(null)
+                      setImageFile(null)
+                    }}
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
+                  >
+                    &times;
+                  </button>
+                </div>
               </div>
             )}
 
@@ -276,15 +284,16 @@ export default function FanZonePage() {
 
                 {post.image && (
                   <div className="mb-4">
-                    <div className="relative w-full">
+                    <div className="relative w-full" style={{ maxWidth: '700px', margin: '0 auto' }}>
                       <img
                         src={post.image || "/placeholder.svg"}
                         alt="Post image"
                         className="w-full rounded-lg object-contain"
                         style={{ 
-                          maxHeight: '900px',
-                          width: '100%',
-                          height: 'auto'
+                          width: '700px',
+                          height: '700px',
+                          objectFit: 'contain',
+                          backgroundColor: 'rgba(0, 0, 0, 0.2)'
                         }}
                       />
                     </div>
