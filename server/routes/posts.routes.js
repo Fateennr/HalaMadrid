@@ -1,9 +1,14 @@
 const express = require("express");
 const multer  = require("multer");
 const { Types } = require("mongoose");
+const jwt = require("jsonwebtoken");
 const PostService = require("../services/posts.services");
 
 const router = express.Router();
+
+// Increase the payload size limit
+router.use(express.json({ limit: '50mb' }));
+router.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // → configure multer to save to server/uploads
 const storage = multer.diskStorage({
@@ -19,20 +24,25 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Create a post (multipart/form-data)
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const { authorId, avatar, content } = req.body;
-    // if multer saved a file, req.file is set
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+    const token = req.headers.authorization?.split(" ")[1];
+    const { content, image, avatar } = req.body;
+    
+    // Get user ID from token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const authorId = decoded.id;
 
     const post = await PostService.createPost({
       authorId,
       avatar,
       content,
-      image: imagePath,
+      image // This will be the base64 string
     });
+
     res.status(201).json(post);
   } catch (err) {
+    console.error("Error creating post:", err);
     res.status(500).json({ error: err.message });
   }
 });
