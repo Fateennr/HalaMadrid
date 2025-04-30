@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Heart, Clock, ImageIcon, Send, Trophy } from "lucide-react"
+import ChatBox from "../components/ChatBox"
 
 // Types
 interface Post {
@@ -407,6 +408,7 @@ export default function FanZonePage() {
           </ul>
         </motion.div>
       </div>
+      <ChatBox />
     </div>
   )
 }

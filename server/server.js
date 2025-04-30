@@ -1,12 +1,11 @@
-// server.js
 require("dotenv").config();
 
 const http        = require("http");
 const app         = require("./app");
 const connectDB   = require("./config/db");
-const initSockets = require("./sockets");
+const initSockets = require("./sockets.js");    // ← explicitly “./sockets.js”
 
-(async () => {
+;(async () => {
   await connectDB();
 
   // create HTTP server from your Express app
