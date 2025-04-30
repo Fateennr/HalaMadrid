@@ -6,10 +6,16 @@ import { motion } from "framer-motion";
 import { Heart, MessageCircle, Share2, Send, Users, LogOut } from "lucide-react";
 
 export default function FanZonePage() {
+  
+  interface user{
+    _id: string;
+    username: string;
+  }
+  
   interface Post {
     id: string;
     avatar?: string;
-    author: string;
+    author: user;
     time: string;
     content: string;
     image?: string;
@@ -17,6 +23,7 @@ export default function FanZonePage() {
     likes: number;
     comments: number;
   }
+
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,22 +34,22 @@ export default function FanZonePage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      router.push("/login"); // Redirect to login if no token
-      return;
-    }
+    // if (!token) {
+    //   router.push("/login"); // Redirect to login if no token
+    //   return;
+    // }
 
     fetchPosts();
 
     async function fetchPosts() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fan-zone`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/fanzone/feed`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!res.ok) {
-          throw new Error("Unauthorized");
-        }
+        // if (!res.ok) {
+        //   throw new Error("Unauthorized");
+        // }
 
         const data = await res.json();
         setPosts(data);
@@ -126,10 +133,10 @@ export default function FanZonePage() {
               >
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gray-600 overflow-hidden">
-                    <img src={post.avatar || "/placeholder.svg"} alt={`${post.author}'s avatar`} />
+                    <img src={post.avatar || "/placeholder.svg"} alt={`${post.author.username}'s avatar`} />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{post.author}</h3>
+                    <h3 className="font-semibold">{post.author.username}</h3>
                     <p className="text-xs text-gray-400">{post.time}</p>
                   </div>
                 </div>

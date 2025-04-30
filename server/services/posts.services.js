@@ -21,8 +21,12 @@ class PostService {
 
   async getFeedPosts() {
     return PostModel.find()
-      .sort({ createdAt: -1 })
-      .exec()
+    .sort({ createdAt: -1 })
+    .populate({ 
+      path: 'author', 
+      select: 'username'        
+    })
+    .exec()
   }
 
 

@@ -1,6 +1,9 @@
 const express = require('express');
 const PostService = require('../services/posts.services.js');
 
+
+
+
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -16,7 +19,8 @@ router.post('/', async (req, res) => {
 
 router.get('/feed', async (req, res) => {
   try {
-    const posts = await PostService.getFeedPosts()
+    const posts = await PostService.getFeedPosts();
+    console.log('posts are ', posts);
     res.json(posts)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -68,3 +72,53 @@ router.delete('/:postId', async (req, res) => {
 })
 
 module.exports = router;
+
+
+// const posts = [
+//   {
+//     id: "1",
+//     avatar: "/placeholder.svg",
+//     author: "MadridFan1902",
+//     time: "2 hours ago",
+//     content: "What an incredible victory last night! Hala Madrid!",
+//     image: "/placeholder.svg",
+//     isLiked: false,
+//     likes: 245,
+//     comments: 12,
+//   },
+
+
+//   {
+
+
+//     id: "2",
+
+
+//     avatar: "/placeholder.svg",
+
+
+//     author: "HalaMadrid",
+
+
+//     time: "5 hours ago",
+
+
+//     content: "Who do you think we should sign next season?",
+
+
+//     image: null,
+
+
+//     isLiked: true,
+
+
+//     likes: 178,
+
+
+//     comments: 34,
+
+
+//   },
+
+
+// ];

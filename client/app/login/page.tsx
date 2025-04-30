@@ -20,9 +20,9 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (!res.ok) {
-        throw new Error("Invalid username or password");
-      }
+      // if (!res.ok) {
+      //   throw new Error("Invalid username or password");
+      // }
 
       const { token } = await res.json();
       localStorage.setItem("token", token); // Store token in localStorage
