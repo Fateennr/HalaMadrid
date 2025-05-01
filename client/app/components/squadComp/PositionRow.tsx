@@ -31,7 +31,7 @@ interface PositionRowProps {
   title: string
   players: Player[]
   onPlayerClick: (player: Player) => void
-  displayCount: number // Number of players to display at once
+  displayCount: number 
 }
 
 export default function PositionRow({ title, players, onPlayerClick, displayCount }: PositionRowProps) {
@@ -40,7 +40,6 @@ export default function PositionRow({ title, players, onPlayerClick, displayCoun
   const [showRightArrow, setShowRightArrow] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  // Card width including margins (220px card + 32px margins)
   const cardWidth = 252
 
   // Check if we need arrows (if there are more players than displayCount)
@@ -101,8 +100,8 @@ export default function PositionRow({ title, players, onPlayerClick, displayCoun
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10"
             style={{
               backgroundColor: "white",
-              width: "40px", // Slightly larger
-              height: "40px", // Slightly larger
+              width: "40px",
+              height: "40px", 
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
