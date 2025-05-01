@@ -87,14 +87,6 @@ export default function MatchHero({ match }: { match: MatchItem }) {
                     <span className="text-gray-700">{match.venue}</span>
                   </div>
                 </div>
-
-                <motion.button
-                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Get Tickets
-                </motion.button>
               </div>
 
               <div className="w-full md:w-1/2">
