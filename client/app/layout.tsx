@@ -22,6 +22,7 @@ export default function RootLayout({
             <Header />
             <div className="h-14" />
               {children}
+            </div>
             <Footer />
           </body>
     </html>

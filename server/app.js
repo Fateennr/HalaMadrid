@@ -6,12 +6,8 @@ const matchR = require("./routes/matches");
 const squadR = require("./routes/squad");
 const authRoutes = require("./routes/auth");
 const fanzoneRoutes = require("./routes/posts.routes"); 
+
 const legendsRoutes = require("./routes/legends");
-
-
-
-
-
 const app = express();
 
 // Increase payload size limits
