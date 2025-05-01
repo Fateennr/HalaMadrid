@@ -4,13 +4,18 @@ const PostModel = require('../models/posts.model.js');
 class PostService {
 
   async createPost({ authorId, avatar, content, image }) {
-    const post = new PostModel({
-      author: new Types.ObjectId(authorId),
-      avatar,
-      content,
-      image,
-    })
-    return post.save()
+    try {
+      const post = new PostModel({
+        author: new Types.ObjectId(authorId),
+        avatar,
+        content,
+        image, // Store the base64 image string directly
+      });
+      return await post.save();
+    } catch (err) {
+      console.error("Error in createPost:", err);
+      throw err;
+    }
   }
 
   async getPostsByUser(userId) {

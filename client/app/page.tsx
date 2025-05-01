@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Lexend } from "next/font/google"
 import MatchCard from "@/app/components/matchComp/MatchCard"
 import Image from "next/image"
-import { ArrowRight, Trophy, Star, Calendar, ChevronRight } from "lucide-react"
+import { ArrowRight, Trophy, Star, Calendar, ChevronRight, Award, Crown } from "lucide-react"
 import Link from "next/link"
 import axios from "axios"
 import type { NewsItem } from "@/app/components/newsComp/NewsHero"
@@ -60,9 +60,27 @@ export default function Home() {
   }, [])
 
   const trophies = [
-    { name: "La Liga", count: 35, icon: "/placeholder.svg?height=60&width=60" },
-    { name: "UEFA Champions League", count: 14, icon: "/placeholder.svg?height=60&width=60" },
-    { name: "Copa del Rey", count: 20, icon: "/placeholder.svg?height=60&width=60" },
+    {
+      name: "La Liga",
+      count: 35,
+      icon: <Trophy className="w-full h-full text-yellow-500" />,
+      description: "Most titles in Spanish league history",
+      color: "from-blue-500 to-blue-700",
+    },
+    {
+      name: "UEFA Champions League",
+      count: 14,
+      icon: <Crown className="w-full h-full text-yellow-500" />,
+      description: "Most European Cup/UCL trophies ever",
+      color: "from-indigo-500 to-indigo-700",
+    },
+    {
+      name: "Copa del Rey",
+      count: 20,
+      icon: <Award className="w-full h-full text-yellow-500" />,
+      description: "Second most in Spanish football",
+      color: "from-red-500 to-red-700",
+    },
   ]
 
   return (
@@ -70,13 +88,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[70vh] overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="rm1.jpg"
-            alt="Santiago Bernabéu Stadium"
-            fill
-            priority
-            className="object-cover"
-          />
+          <Image src="rm1.jpg" alt="Santiago Bernabéu Stadium" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-transparent" />
         </div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center">
@@ -254,20 +266,45 @@ export default function Home() {
             {trophies.map((trophy, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md text-center relative overflow-hidden"
+                className="bg-white rounded-lg shadow-md overflow-hidden relative"
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="absolute top-0 right-0 w-24 h-24 opacity-5">
-                  <Trophy className="w-full h-full" />
-                </div>
-                <div className="flex justify-center mb-4">
-                  <div className="relative w-16 h-16">
-                    <Image src={trophy.icon || "/placeholder.svg"} alt={trophy.name} fill className="object-contain" />
+                {/* Trophy header with gradient background */}
+                <div className={`bg-gradient-to-r ${trophy.color} p-6 text-white relative`}>
+                  <div className="absolute top-0 right-0 w-32 h-32 opacity-10">{trophy.icon}</div>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold">{trophy.name}</h3>
+                    <div className="bg-white/20 rounded-full p-2 backdrop-blur-sm">
+                      <div className="w-12 h-12">{trophy.icon}</div>
+                    </div>
                   </div>
                 </div>
-                <h3 className="text-xl font-medium mb-2 text-gray-800">{trophy.name}</h3>
-                <p className="text-4xl font-bold text-blue-600">{trophy.count}</p>
+
+                {/* Trophy content */}
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-gray-600 text-sm">{trophy.description}</p>
+                    <motion.div
+                      className="text-5xl font-bold text-blue-600"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
+                    >
+                      {trophy.count}
+                    </motion.div>
+                  </div>
+
+                  {/* Trophy visualization bar */}
+                  <div className="h-2 bg-gray-100 w-full rounded-full overflow-hidden">
+                    <motion.div
+                      className={`h-full bg-gradient-to-r ${trophy.color}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(trophy.count / 35) * 100}%` }}
+                      transition={{ delay: 0.5 + index * 0.1, duration: 1 }}
+                    />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
