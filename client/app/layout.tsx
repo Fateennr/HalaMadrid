@@ -7,7 +7,7 @@ import Footer from "./components/Footer"
 const lexend = Lexend({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "Real Madrid Fan Page",
+  title: "Hala Madrid",
   description: "The ultimate destination for Real Madrid fans",
 }
 
