@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Heart, Clock, ImageIcon, Send, Trophy } from "lucide-react"
 import ChatBox from "../components/ChatBox"
+import { LogOut } from "lucide-react"
 
 // Types
 interface Post {
@@ -62,13 +63,18 @@ export default function FanZonePage() {
     }
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    // Redirect to login page if login is failed
+    router.push("/login")
+  }
+
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setImageFile(file)
 
-      // Create a preview URL
       const reader = new FileReader()
       reader.onload = (event) => {
         if (event.target?.result) {
@@ -211,6 +217,23 @@ export default function FanZonePage() {
           <p className="text-gray-600 max-w-3xl mx-auto">
             Connect with fellow Madridistas and share your passion for the greatest club in football history.
           </p>
+
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            onClick={handleLogout}
+            className="absolute right-0 top-0 flex items-center gap-2 bg-white text-[#1E4C9A] px-4 py-2 rounded-lg font-medium border border-[#1E4C9A] hover:bg-[#1E4C9A] hover:text-white transition-colors shadow-sm"
+            style={{
+              boxShadow: "0 2px 8px rgba(30, 76, 154, 0.15)",
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <LogOut size={18} />
+            Logout
+          </motion.button>
+
         </motion.div>
 
 
