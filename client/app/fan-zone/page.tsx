@@ -4,9 +4,11 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Heart, Clock, ImageIcon, Send, Trophy } from "lucide-react"
+import { Heart, Clock, ImageIcon, Send, Trophy } from 'lucide-react'
 import ChatBox from "../components/ChatBox"
-import { LogOut } from "lucide-react"
+
+// Create a custom event name for auth state changes (must match the one in header.tsx)
+const AUTH_STATE_CHANGE_EVENT = "authStateChange"
 
 // Types
 interface Post {
@@ -38,6 +40,9 @@ export default function FanZonePage() {
       router.push("/login")
     } else {
       fetchPosts()
+      
+      // Dispatch custom event to notify header that user is logged in
+      window.dispatchEvent(new Event(AUTH_STATE_CHANGE_EVENT))
     }
   }, [router])
 
@@ -61,12 +66,6 @@ export default function FanZonePage() {
       console.error("Error fetching posts:", err)
       setError("Failed to load posts. Please try again later.")
     }
-  }
-
-  const handleLogout = () => {
-    localStorage.removeItem("token")
-    // Redirect to login page if login is failed
-    router.push("/login")
   }
 
   // Handle image selection
@@ -189,7 +188,7 @@ export default function FanZonePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-10 md:p-12">
+    <div className="min-h-screen bg-gray-50 p-10 md:p-12 pt-32">
       <div className="max-w-5xl mx-auto">
         {/* Header section with animation */}
         <motion.div
@@ -217,26 +216,7 @@ export default function FanZonePage() {
           <p className="text-gray-600 max-w-3xl mx-auto">
             Connect with fellow Madridistas and share your passion for the greatest club in football history.
           </p>
-
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            onClick={handleLogout}
-            className="absolute right-0 top-0 flex items-center gap-2 bg-white text-[#1E4C9A] px-4 py-2 rounded-lg font-medium border border-[#1E4C9A] hover:bg-[#1E4C9A] hover:text-white transition-colors shadow-sm"
-            style={{
-              boxShadow: "0 2px 8px rgba(30, 76, 154, 0.15)",
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <LogOut size={18} />
-            Logout
-          </motion.button>
-
         </motion.div>
-
-
 
         {/* Create Post Form */}
         <motion.div
@@ -269,7 +249,6 @@ export default function FanZonePage() {
             />
 
             {image && (
-
               <motion.div
                 className="relative mb-4 overflow-hidden rounded-lg border border-gray-200"
                 initial={{ opacity: 0, y: 20 }}
@@ -287,7 +266,6 @@ export default function FanZonePage() {
                   &times;
                 </button>
               </motion.div>
-
             )}
 
             <div className="flex items-center justify-between">
@@ -354,7 +332,6 @@ export default function FanZonePage() {
                 <p className="mb-4 text-gray-700">{post.content}</p>
 
                 {post.image && (
-
                   <motion.div
                     className="mb-4 overflow-hidden rounded-lg border border-gray-200"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -372,7 +349,6 @@ export default function FanZonePage() {
                       }}
                     />
                   </motion.div>
-
                 )}
 
                 <div className="flex items-center gap-6 text-gray-500 pt-2 border-t border-gray-100">
@@ -385,12 +361,8 @@ export default function FanZonePage() {
                     <Heart size={18} />
                     <span className="font-medium">{post.likes}</span>
                   </motion.button>
-                  <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.05 }}>
-                  
-            
-                  </motion.div>
+                  <motion.div className="flex items-center gap-2" whileHover={{ scale: 1.05 }}></motion.div>
                 </div>
-
               </motion.div>
             ))
           )}
