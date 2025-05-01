@@ -1,8 +1,6 @@
 "use client"
-
-import { useState } from "react"
 import Image from "next/image"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { motion } from "framer-motion"
 
 interface PlayerStats {
   passing: number
@@ -25,113 +23,104 @@ interface PlayerProps {
   appearances: number
   overall: number
   stats: PlayerStats
+  onCardClick: () => void
 }
 
-export default function PlayerCard({ player }: { player: PlayerProps }) {
-  const [expanded, setExpanded] = useState(false)
-
-  // Function to determine color based on stat value (FIFA style)
-  const getStatColor = (value: number) => {
-    if (value >= 90) return "bg-emerald-500"
-    if (value >= 80) return "bg-green-500"
-    if (value >= 70) return "bg-yellow-500"
-    if (value >= 60) return "bg-orange-500"
-    return "bg-red-500"
-  }
-
+export default function PlayerCard({ player, onCardClick }: { player: PlayerProps; onCardClick: () => void }) {
   // Function to determine overall rating color
   const getOverallColor = (value: number) => {
-    if (value >= 90) return "text-emerald-500"
-    if (value >= 80) return "text-green-500"
-    if (value >= 70) return "text-yellow-500"
-    if (value >= 60) return "text-orange-500"
-    return "text-red-500"
+    if (value >= 90) return "#00AC69" // Green
+    if (value >= 80) return "#7AE582" // Light Green
+    if (value >= 70) return "#FFD166" // Yellow
+    if (value >= 60) return "#F76A6A" // Orange-Red
+    return "#EF476F" // Red
   }
 
   return (
-    <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 ${
-        expanded ? "scale-105 shadow-xl" : "hover:shadow-lg hover:scale-102"
-      }`}
+    <motion.div
+      whileHover={{ scale: 1.05, y: -5 }}
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={onCardClick}
+      className="cursor-pointer mx-2 mb-4"
+      style={{
+        width: "180px",
+        height: "280px",
+        backgroundColor: "white",
+        borderRadius: "12px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        overflow: "hidden",
+        position: "relative",
+      }}
     >
-      <div className="cursor-pointer" onClick={() => setExpanded(!expanded)}>
-        <div className="relative bg-gradient-to-r from-white to-gray-100 p-4">
-          {/* Top section with player number and position */}
-          <div className="flex justify-between items-start mb-2">
-            <div className="bg-[#FEDF00] text-black font-bold rounded-full w-8 h-8 flex items-center justify-center">
-              {player.number}
-            </div>
-            <div className="bg-[#1E4C9A] text-white px-2 py-1 rounded text-xs font-semibold">{player.position}</div>
-          </div>
-
-          {/* Player image and basic info */}
-          <div className="flex items-center">
-            <div className="relative w-24 h-24 mr-4">
-              <Image
-                src={player.imageLink || "/placeholder.svg"}
-                alt={player.name}
-                fill
-                className="object-cover rounded-full border-2 border-[#FEDF00]"
-              />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg">{player.name}</h3>
-              <p className="text-gray-600 text-sm">{player.nationality}</p>
-              <p className="text-gray-600 text-sm">{player.role}</p>
-              <div className="flex items-center mt-1">
-                <span className={`text-xl font-bold ${getOverallColor(player.overall)}`}>{player.overall}</span>
-                <span className="text-gray-500 text-sm ml-1">OVR</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Expand/collapse indicator */}
-          <div className="flex justify-center mt-2">
-            {expanded ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
-          </div>
+      {/* Card Header with Position */}
+      <div
+        style={{
+          backgroundColor: "#1E4C9A",
+          padding: "8px 12px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span style={{ color: "white", fontWeight: "bold", fontSize: "14px" }}>{player.position}</span>
+        <div
+          style={{
+            backgroundColor: "#FEDF00",
+            color: "#000",
+            fontWeight: "bold",
+            borderRadius: "50%",
+            width: "24px",
+            height: "24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "12px",
+          }}
+        >
+          {player.number}
         </div>
       </div>
 
-      {/* Expanded stats section */}
-      {expanded && (
-        <div className="p-4 bg-gray-50 border-t border-gray-200">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-semibold text-sm text-gray-700 mb-2">Player Info</h4>
-              <div className="space-y-1 text-sm">
-                <p>
-                  <span className="text-gray-500">Age:</span> {player.age}
-                </p>
-                <p>
-                  <span className="text-gray-500">Appearances:</span> {player.appearances}
-                </p>
-              </div>
-            </div>
+      {/* Player Image */}
+      <div style={{ position: "relative", height: "160px", backgroundColor: "#f5f5f5" }}>
+        <Image
+          src={player.imageLink || "/placeholder.svg?height=160&width=180"}
+          alt={player.name}
+          fill
+          style={{ objectFit: "cover", objectPosition: "top center" }}
+        />
+      </div>
 
-            <div>
-              <h4 className="font-semibold text-sm text-gray-700 mb-2">Overall Rating</h4>
-              <div className="flex items-center">
-                <div className={`text-3xl font-bold ${getOverallColor(player.overall)}`}>{player.overall}</div>
-              </div>
-            </div>
-          </div>
+      {/* Player Info */}
+      <div style={{ padding: "12px" }}>
+        <h3 style={{ fontWeight: "bold", fontSize: "16px", marginBottom: "4px" }}>{player.name}</h3>
+        <p style={{ color: "#666", fontSize: "14px", marginBottom: "8px" }}>{player.nationality}</p>
 
-          <h4 className="font-semibold text-sm text-gray-700 mt-4 mb-2">Player Stats</h4>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-            {Object.entries(player.stats).map(([key, value]) => (
-              <div key={key} className="flex flex-col">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs capitalize text-gray-600">{key.replace(/([A-Z])/g, " $1").trim()}</span>
-                  <span className={`text-xs font-semibold ${getOverallColor(value)}`}>{value}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
-                  <div className={`h-1.5 rounded-full ${getStatColor(value)}`} style={{ width: `${value}%` }}></div>
-                </div>
-              </div>
-            ))}
+        {/* Overall Rating */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ color: "#666", fontSize: "14px" }}>Overall</span>
+          <div
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              backgroundColor: "#f0f0f0",
+              border: `2px solid ${getOverallColor(player.overall)}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              fontSize: "16px",
+              color: getOverallColor(player.overall),
+            }}
+          >
+            {player.overall}
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    </motion.div>
   )
 }
