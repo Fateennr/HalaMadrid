@@ -1,4 +1,3 @@
-// server/routes/players.js
 const express                = require("express");
 const fetchPlayerStatsByName = require("../config/playerStatsApi");
 const router                 = express.Router();
@@ -15,5 +14,8 @@ router.get("/stats", async (req, res) => {
     res.status(500).json({ error: "Unable to load player stats" });
   }
 });
+
+
+
 
 module.exports = router;
