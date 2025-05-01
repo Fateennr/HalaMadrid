@@ -181,25 +181,27 @@ export default function SquadPage() {
             boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)",
           }}
         >
-          {/* Formation layout */}
+          {/* Formation layout with specific display counts */}
           <div className="space-y-16">
-            {/* Forwards */}
-            <PositionRow title="Forwards" players={forwards} onPlayerClick={handlePlayerClick} />
+            {/* Forwards - Show 2 at a time */}
+            <PositionRow title="Forwards" players={forwards} onPlayerClick={handlePlayerClick} displayCount={2} />
 
-            {/* Midfielders */}
-            <PositionRow title="Midfielders" players={midfielders} onPlayerClick={handlePlayerClick} />
+            {/* Midfielders - Show 4 at a time */}
+            <PositionRow title="Midfielders" players={midfielders} onPlayerClick={handlePlayerClick} displayCount={4} />
 
-            {/* Defenders */}
-            <PositionRow title="Defenders" players={defenders} onPlayerClick={handlePlayerClick} />
+            {/* Defenders - Show 4 at a time */}
+            <PositionRow title="Defenders" players={defenders} onPlayerClick={handlePlayerClick} displayCount={4} />
 
-            {/* Goalkeeper */}
-            <PositionRow title="Goalkeepers" players={goalkeepers} onPlayerClick={handlePlayerClick} />
+            {/* Goalkeeper - Show 1 at a time */}
+            <PositionRow title="Goalkeepers" players={goalkeepers} onPlayerClick={handlePlayerClick} displayCount={1} />
           </div>
         </div>
       </div>
 
+      {/* Player Stats Modal */}
       <PlayerStatsModal player={selectedPlayer} isOpen={isModalOpen} onClose={handleCloseModal} />
 
+      {/* Custom CSS for hiding scrollbars */}
       <style jsx global>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
